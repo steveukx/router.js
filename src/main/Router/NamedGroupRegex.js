@@ -1,7 +1,9 @@
+if (typeof define !== 'function') { var define = require('amdefine')(module) }
+
 /**
  * @exports NamedGroupRegex
  */
-var NamedGroupRegex = (function () {
+define([],  function () {
 
    /**
     *
@@ -37,4 +39,4 @@ var NamedGroupRegex = (function () {
 
    return NamedGroupRegex;
 
-}());
+});

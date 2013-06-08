@@ -1,7 +1,9 @@
+if (typeof define !== 'function') { var define = require('amdefine')(module) }
+
 /**
  * @exports BrowserRouter
  */
-var BrowserRouter = (function () {
+define(['./Router', './BrowserRoute'], function (Router, BrowserRoute) {
 
    /**
     * @name BrowserRouter
@@ -42,4 +44,4 @@ var BrowserRouter = (function () {
 
    return BrowserRouter;
 
-}());
+});

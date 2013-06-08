@@ -1,7 +1,9 @@
+if (typeof define !== 'function') { var define = require('amdefine')(module) }
+
 /**
  * @exports Route
  */
-var Route = (function () {
+define([], function () {
 
    /**
     *
@@ -94,13 +96,4 @@ var Route = (function () {
       return this._regex.exec(url);
    };
 
-   /**
-    *
-    * @param handlerConfig
-    * @returns {Function}
-    */
-   Route.configurationHandler = function (handlerConfig) {
-      return
-   };
-
-}());
+});

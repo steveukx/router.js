@@ -1,0 +1,36 @@
+{
+  "name": "url-router",
+  "description": "URL based route dispatcher",
+  "version": "1.0.1",
+  "author": "Steve King <steve@mydev.co>",
+  "contributors": [
+    {
+      "name": "Steve King",
+      "email": "steve@mydev.co"
+    }
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.6",
+    "amdefine": "0.0.5"
+  },
+  "devDependencies": {
+    "grunt": "",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-requirejs": "~0.4.1"
+  },
+  "keywords": [
+    "url",
+    "route",
+    "dispatch",
+    "router"
+  ],
+  "repository": "http://github.com/steveukx/router.js.git",
+  "main": "src/main/Router.js",
+  "bin": {},
+  "scripts": {},
+  "config": {},
+  "engines": {
+    "node": ">= 0.8.1"
+  }
+}
