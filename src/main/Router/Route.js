@@ -96,4 +96,6 @@ define([], function () {
       return this._regex.exec(url);
    };
 
+   return Route;
+
 });
