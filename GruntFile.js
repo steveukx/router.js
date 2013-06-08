@@ -3,42 +3,32 @@ module.exports = function(grunt) {
    grunt.initConfig({
       pkg: grunt.file.readJSON('package.json'),
 
-//      uglify: {
-//         options: {
-//            banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-//         },
-//         build: {
-//            src: 'src/main/<%= pkg.name %>.js',
-//            dest: 'src/dist/<%= pkg.name %>.min.js'
-//         }
-//      },
+      uglify: {
+         options: {
+            banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+         },
+         build: {
+            src: 'dist/<%= pkg.version %>/BrowserRouter.js',
+            dest: 'dist/<%= pkg.version %>/BrowserRouter-min.js'
+         }
+      },
 
       requirejs: {
          compile: {
             options: {
-               dir: 'src/main/',
-               baseUrl: "./",
-               keepBuildDir: true,
-//               mainConfigFile: "build/require.config.js",
-//               optimize: "uglify",
-//               out: "dist/<%= pkg.name %>.js",
-               packages: [],
-               modules: [
-                  {
-                     name: './Router/BrowserRouter'
-                  }
-               ]
+                 out: "./dist/<%= pkg.version %>/BrowserRouter.js"
+               , name: "BrowserRouter"
+               , baseUrl: "src/main/Router/"
+               , optimize: "none"
             }
          }
       }
-
    });
 
    grunt.loadNpmTasks('grunt-contrib-uglify');
-   grunt.loadNpmTasks('grunt-contrib-concat');
    grunt.loadNpmTasks('grunt-contrib-requirejs');
 
    // Default task(s).
-   grunt.registerTask('default', ['requirejs']);
+   grunt.registerTask('default', ['requirejs', 'uglify']);
 
 };
