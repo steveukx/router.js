@@ -227,7 +227,7 @@ define('Router',['./NamedGroupRegex', './Route', 'subscribable'], function(Named
             fire('route.error', err);
          }
          else if(routes.length) {
-            var route = routes.unshift();
+            var route = routes.shift();
             var param = route.getRouteParameters(url);
             fire('route.before', route, param);
 
