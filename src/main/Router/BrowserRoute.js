@@ -43,11 +43,6 @@ define(['./Route', 'promise'], function (Route, Promise) {
             handlerConfig.controller = new handlerConfig.controller(handlerConfig.model);
          }
 
-         // is the controller persisted and can accept a replacement model
-         if(handlerConfig.controller && typeof handlerConfig.controller.setModel === 'function') {
-            handlerConfig.controller.setModel(data);
-         }
-
          var model = handlerConfig.model || data;
          var view = jQuery(template.trim());
          var controller = handlerConfig.controller;
@@ -62,18 +57,54 @@ define(['./Route', 'promise'], function (Route, Promise) {
          view.appendTo(handlerConfig.container || document.body);
       };
 
+      var dependencies = {
+         done: function(data) {
+            this._data = this._data || data;
+            if(--this._pending <= 0) {
+               onDataReady(handlerConfig.template || '<div />', this._data);
+            }
+         },
+         start: function() {
+            if(!this._pending) {
+               this.done();
+            }
+         },
+         add: function() {
+            this._pending++;
+         },
+         _data: null,
+         _pending: 0
+      };
+
       if(handlerConfig.templateUrl) {
-         var dependencies = ['text!' + handlerConfig.templateUrl];
-         if(!handlerConfig.noData) {
-            dependencies.push('text!' + url);
-         }
-         require(dependencies, onDataReady);
+         dependencies.add(require(['text!' + handlerConfig.templateUrl], function(template) {
+            handlerConfig.template = template;
+            dependencies.done(null);
+         }));
       }
-      else {
-         require(handlerConfig.noData ? [] : ['text!' + url], function(data) {
-            onDataReady(handlerConfig.template || '<div />', data);
-         });
+
+      if(!handlerConfig.noData) {
+         dependencies.add(require(['text!' + url], function(data) {
+            if(String(data).trim().charAt(0) == '{') {
+               try {
+                  data = JSON.parse(data);
+               }
+               catch (e) {}
+               finally {
+                  dependencies.done(data);
+               }
+            }
+         }));
       }
+
+      if(typeof handlerConfig.controller === 'string') {
+         dependencies.add(require([handlerConfig.controller], function(controller) {
+            handlerConfig.controller = controller;
+            dependencies.done(null);
+         }));
+      }
+
+      dependencies.start();
 
       return result;
    };
