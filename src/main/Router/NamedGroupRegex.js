@@ -1,9 +1,11 @@
-if (typeof define !== 'function') { var define = require('amdefine')(module) }
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
 /**
  * @exports NamedGroupRegex
  */
 define([],  function () {
+
+   'use strict';
 
    /**
     *
@@ -16,14 +18,14 @@ define([],  function () {
       var groups = this._groups = [];
       this._regex = new RegExp(
           source
-              .replace(/:([a-zA-Z0-9]+)/g, function (match, group, position, all) {
+              .replace(/:([a-zA-Z0-9]+)/g, function (match, group) {
                  groups.push(group);
                  return '([^/]+)';
               }));
    }
 
    NamedGroupRegex.prototype.test = function (comparison) {
-      return this._regex.test(comparison.replace(/\/$/, ''));
+      return this._regex.test(comparison);
    };
 
    NamedGroupRegex.prototype.exec = function (comparison) {
