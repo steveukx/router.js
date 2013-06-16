@@ -10,8 +10,9 @@ module.exports = function (grunt) {
             banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
          },
          build: {
-            src: 'dist/<%= pkg.version %>/BrowserRouter.js',
-            dest: 'dist/<%= pkg.version %>/BrowserRouter-min.js'
+            files: {
+               'dist/<%= pkg.version %>/BrowserRouter-min.js': 'dist/<%= pkg.version %>/BrowserRouter.js'
+            }
          }
       },
 
