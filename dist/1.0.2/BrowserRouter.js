@@ -425,7 +425,7 @@ define('BrowserRouter',['./Router', './BrowserRoute'], function (Router, Browser
     * Sets up event listeners for hooking into user interaction
     */
    BrowserRouter.prototype._initialiseEvents = function() {
-      jQuery(window).on('popState', this._handleHistoryNavigation.bind(this));
+      jQuery(window).on('popstate', this._handleHistoryNavigation.bind(this));
       jQuery(document).on('click', 'a[href]', this._handleClickNavigation.bind(this));
    };
 
