@@ -1,13 +1,17 @@
-if (typeof define !== 'function') { var define = require('amdefine')(module) }
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
 /**
  * @exports BrowserRouter
  */
 define(['./Router', './BrowserRoute'], function (Router, BrowserRoute) {
 
+   'use strict';
+
    /**
-    * @name BrowserRouter
+    *
     * @constructor
+    * @name BrowserRouter
+    * @extends Router
     */
    function BrowserRouter() {
       Router.call(this);
@@ -25,8 +29,8 @@ define(['./Router', './BrowserRoute'], function (Router, BrowserRoute) {
    /**
     * Handles a navigation as a result of a history change
     */
-   BrowserRouter.prototype._handleHistoryNavigation = function(e) {
-      this._handleHistoryNavigation(location.pathname);
+   BrowserRouter.prototype._handleHistoryNavigation = function() {
+      this._handleNavigation(location.pathname);
    };
 
    /**
@@ -35,7 +39,7 @@ define(['./Router', './BrowserRoute'], function (Router, BrowserRoute) {
    BrowserRouter.prototype._handleClickNavigation = function(e) {
       e.preventDefault();
       history.pushState({}, '', e.currentTarget.getAttribute('href'));
-      this._handleHistoryNavigation(location.pathname);
+      this._handleNavigation(location.pathname);
    };
 
    BrowserRouter.prototype._buildRoute = function(regExp, routeHandler) {

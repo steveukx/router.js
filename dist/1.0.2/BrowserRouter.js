@@ -156,6 +156,7 @@ define('Router',['./NamedGroupRegex', './Route', 'subscribable'], function(Named
    
 
    /**
+    *
     * @name Router
     * @constructor
     */
@@ -380,9 +381,13 @@ define('BrowserRoute',['./Route', 'promise'], function (Route, Promise) {
  */
 define('BrowserRouter',['./Router', './BrowserRoute'], function (Router, BrowserRoute) {
 
+   
+
    /**
-    * @name BrowserRouter
+    *
     * @constructor
+    * @name BrowserRouter
+    * @extends Router
     */
    function BrowserRouter() {
       Router.call(this);
@@ -400,8 +405,8 @@ define('BrowserRouter',['./Router', './BrowserRoute'], function (Router, Browser
    /**
     * Handles a navigation as a result of a history change
     */
-   BrowserRouter.prototype._handleHistoryNavigation = function(e) {
-      this._handleHistoryNavigation(location.pathname);
+   BrowserRouter.prototype._handleHistoryNavigation = function() {
+      this._handleNavigation(location.pathname);
    };
 
    /**
@@ -410,7 +415,7 @@ define('BrowserRouter',['./Router', './BrowserRoute'], function (Router, Browser
    BrowserRouter.prototype._handleClickNavigation = function(e) {
       e.preventDefault();
       history.pushState({}, '', e.currentTarget.getAttribute('href'));
-      this._handleHistoryNavigation(location.pathname);
+      this._handleNavigation(location.pathname);
    };
 
    BrowserRouter.prototype._buildRoute = function(regExp, routeHandler) {
