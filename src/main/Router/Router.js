@@ -25,6 +25,21 @@ define(['./NamedGroupRegex', './Route', 'subscribable'], function(NamedGroupRege
    Router.prototype['config.strip.trailing.slash'] = false;
 
    /**
+    * @type {String}
+    */
+   Router.prototype['config.model.getter'] = 'getModel';
+
+   /**
+    * @type {String}
+    */
+   Router.prototype['config.model.setter'] = 'setModel';
+
+   /**
+    * @type {String}
+    */
+   Router.prototype['config.view.setter'] = 'setView';
+
+   /**
     * Config getter/setter. Called with just a key gets and returns the value of that configuration option,
     * called with a key and value, sets the configuration option to that value and returns the Router instance
     * for convenience of chaining requests.

@@ -43,6 +43,19 @@ define(['./Router', './BrowserRoute'], function (Router, BrowserRoute) {
    };
 
    BrowserRouter.prototype._buildRoute = function(regExp, routeHandler) {
+      if(typeof routeHandler !== 'function') {
+         var browserRouter = this;
+         routeHandler.getModel = function(component) {
+            return component && component[browserRouter.config('model.getter')] && component[browserRouter.config('model.getter')]();
+         };
+         routeHandler.setModel = function(component, model) {
+            return component && component[browserRouter.config('model.setter')] && component[browserRouter.config('model.setter')](model);
+         };
+         routeHandler.setView = function(component, view) {
+            return component && component[browserRouter.config('view.setter')] && component[browserRouter.config('view.setter')](view);
+         };
+      }
+
       return new BrowserRoute(regExp, routeHandler);
    };
 

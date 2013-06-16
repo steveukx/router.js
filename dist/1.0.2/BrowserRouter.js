@@ -64,7 +64,7 @@ define('Route',['promise'], function (Promise) {
    function Route(regex, handler) {
       this._regex = regex;
 
-      if(typeof handler == "function") {
+      if(typeof handler === 'function') {
          this._handler = handler;
       }
       else {
@@ -173,6 +173,21 @@ define('Router',['./NamedGroupRegex', './Route', 'subscribable'], function(Named
     * @type {Boolean}
     */
    Router.prototype['config.strip.trailing.slash'] = false;
+
+   /**
+    * @type {String}
+    */
+   Router.prototype['config.model.getter'] = 'getModel';
+
+   /**
+    * @type {String}
+    */
+   Router.prototype['config.model.setter'] = 'setModel';
+
+   /**
+    * @type {String}
+    */
+   Router.prototype['config.view.setter'] = 'setView';
 
    /**
     * Config getter/setter. Called with just a key gets and returns the value of that configuration option,
@@ -317,8 +332,8 @@ define('BrowserRoute',['./Route', 'promise'], function (Route, Promise) {
     * @name BrowserRoute
     * @extends Route
     */
-   function BrowserRoute() {
-      Route.apply(this, arguments);
+   function BrowserRoute(regex, handler) {
+      Route.call(this, regex, handler);
    }
    BrowserRoute.prototype = Object.create(BrowserRoute.superclass = Route.prototype);
 
@@ -357,7 +372,12 @@ define('BrowserRoute',['./Route', 'promise'], function (Route, Promise) {
          var view = jQuery(template.trim());
          var controller = handlerConfig.controller;
 
-         route.mvc(model, view, controller);
+         // wire up the m, v and c with standard getter/setter methods
+         if(handlerConfig.getModel() !== model) {
+            handlerConfig.setModel(controller, model);
+         }
+         handlerConfig.setView(controller, view);
+         handlerConfig.setModel(view, model);
 
          view.appendTo(handlerConfig.container || document.body);
       };
@@ -423,6 +443,19 @@ define('BrowserRouter',['./Router', './BrowserRoute'], function (Router, Browser
    };
 
    BrowserRouter.prototype._buildRoute = function(regExp, routeHandler) {
+      if(typeof routeHandler !== 'function') {
+         var browserRouter = this;
+         routeHandler.getModel = function(component) {
+            return component && component[browserRouter.config('model.getter')] && component[browserRouter.config('model.getter')]();
+         };
+         routeHandler.setModel = function(component, model) {
+            return component && component[browserRouter.config('model.setter')] && component[browserRouter.config('model.setter')](model);
+         };
+         routeHandler.setView = function(component, view) {
+            return component && component[browserRouter.config('view.setter')] && component[browserRouter.config('view.setter')](view);
+         };
+      }
+
       return new BrowserRoute(regExp, routeHandler);
    };
 

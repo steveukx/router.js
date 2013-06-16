@@ -53,7 +53,12 @@ define(['./Route', 'promise'], function (Route, Promise) {
          var view = jQuery(template.trim());
          var controller = handlerConfig.controller;
 
-         route.mvc(model, view, controller);
+         // wire up the m, v and c with standard getter/setter methods
+         if(handlerConfig.getModel() !== model) {
+            handlerConfig.setModel(controller, model);
+         }
+         handlerConfig.setView(controller, view);
+         handlerConfig.setModel(view, model);
 
          view.appendTo(handlerConfig.container || document.body);
       };
