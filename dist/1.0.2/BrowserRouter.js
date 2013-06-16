@@ -1,6 +1,5 @@
 
 
-
 /**
  * @exports NamedGroupRegex
  */
@@ -379,7 +378,7 @@ define('BrowserRoute',['./Route', 'promise'], function (Route, Promise) {
       var dependencies = {
          done: function(data) {
             this._data = this._data || data;
-            if(this._pending-- <= 0) {
+            if(--this._pending <= 0) {
                onDataReady(handlerConfig.template || '<div />', this._data);
             }
          },
