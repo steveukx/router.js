@@ -452,7 +452,7 @@ define('BrowserRouter',['./Router', './BrowserRoute', 'subscribable'], function 
    }
    BrowserRouter.prototype = Object.create(BrowserRouter.superclass = Router.prototype);
 
-   Subscribable.prepareInstance(BrowserRoute);
+   Subscribable.prepareInstance(BrowserRouter);
 
    /**
     * Sets up event listeners for hooking into user interaction
