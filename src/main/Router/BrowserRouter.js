@@ -21,6 +21,21 @@ define(['./Router', './BrowserRoute', 'subscribable'], function (Router, Browser
    Subscribable.prepareInstance(BrowserRouter);
 
    /**
+    * @type {String} Configurable name that a controller should expose as a function to retrieve the current model
+    */
+   BrowserRouter.prototype['config.model.getter'] = 'getModel';
+
+   /**
+    * @type {String} Configurable name that a controller should expose as a function to have a model set on it
+    */
+   BrowserRouter.prototype['config.model.setter'] = 'setModel';
+
+   /**
+    * @type {String} Configurable name that a controller should expose as a function to have a view set on it
+    */
+   BrowserRouter.prototype['config.view.setter'] = 'setView';
+
+   /**
     * Sets up event listeners for hooking into user interaction
     */
    BrowserRouter.prototype._initialiseEvents = function() {

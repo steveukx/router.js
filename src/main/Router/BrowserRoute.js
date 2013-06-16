@@ -25,6 +25,8 @@ define(['./Route', 'promise'], function (Route, Promise) {
       var onDataReady = function (template, data) {
          handlerConfig.template = template;
 
+         data = data || routeParams;
+
          // is the model a constructor
          if(typeof handlerConfig.model === 'function') {
             data = new handlerConfig.model(data);
@@ -48,7 +50,7 @@ define(['./Route', 'promise'], function (Route, Promise) {
          var controller = handlerConfig.controller;
 
          // wire up the m, v and c with standard getter/setter methods
-         if(handlerConfig.getModel() !== model) {
+         if(handlerConfig.getModel(controller) !== model) {
             handlerConfig.setModel(controller, model);
          }
          handlerConfig.setView(controller, view);
@@ -61,7 +63,7 @@ define(['./Route', 'promise'], function (Route, Promise) {
          done: function(data) {
             this._data = this._data || data;
             if(--this._pending <= 0) {
-               onDataReady(handlerConfig.template || '<div />', this._data);
+               onDataReady(this.template || '<div />', this._data);
             }
          },
          start: function() {
@@ -72,15 +74,17 @@ define(['./Route', 'promise'], function (Route, Promise) {
          add: function() {
             this._pending++;
          },
+         template: handlerConfig.template,
          _data: null,
          _pending: 0
       };
 
       if(handlerConfig.templateUrl) {
-         dependencies.add(require(['text!' + handlerConfig.templateUrl], function(template) {
-            handlerConfig.template = template;
-            dependencies.done(null);
-         }));
+         dependencies.add(require(['text!' + handlerConfig.templateUrl.replace(/\{([^\}]+)\}/g, function (all, key) { return String(routeParams[key]); })],
+             function (template) {
+                dependencies.template = template;
+                dependencies.done(null);
+             }));
       }
 
       if(!handlerConfig.noData) {
