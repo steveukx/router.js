@@ -18,7 +18,7 @@ define(['promise'], function (Promise) {
    function Route(regex, handler) {
       this._regex = regex;
 
-      if(typeof handler == "function") {
+      if(typeof handler === 'function') {
          this._handler = handler;
       }
       else {
