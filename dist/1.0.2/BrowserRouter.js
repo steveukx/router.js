@@ -6,6 +6,8 @@
  */
 define('NamedGroupRegex',[],  function () {
 
+   
+
    /**
     *
     * @param {String} source
@@ -17,14 +19,14 @@ define('NamedGroupRegex',[],  function () {
       var groups = this._groups = [];
       this._regex = new RegExp(
           source
-              .replace(/:([a-zA-Z0-9]+)/g, function (match, group, position, all) {
+              .replace(/:([a-zA-Z0-9]+)/g, function (match, group) {
                  groups.push(group);
                  return '([^/]+)';
               }));
    }
 
    NamedGroupRegex.prototype.test = function (comparison) {
-      return this._regex.test(comparison.replace(/\/$/, ''));
+      return this._regex.test(comparison);
    };
 
    NamedGroupRegex.prototype.exec = function (comparison) {
@@ -310,8 +312,10 @@ define('BrowserRoute',['./Route', 'promise'], function (Route, Promise) {
    
 
    /**
-    * @name BrowserRoute
+    *
     * @constructor
+    * @name BrowserRoute
+    * @extends Route
     */
    function BrowserRoute() {
       Route.apply(this, arguments);

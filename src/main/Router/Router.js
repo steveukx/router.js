@@ -8,6 +8,7 @@ define(['./NamedGroupRegex', './Route', 'subscribable'], function(NamedGroupRege
    'use strict';
 
    /**
+    *
     * @name Router
     * @constructor
     */

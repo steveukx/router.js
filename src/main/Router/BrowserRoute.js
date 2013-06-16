@@ -8,8 +8,10 @@ define(['./Route', 'promise'], function (Route, Promise) {
    'use strict';
 
    /**
-    * @name BrowserRoute
+    *
     * @constructor
+    * @name BrowserRoute
+    * @extends Route
     */
    function BrowserRoute() {
       Route.apply(this, arguments);
