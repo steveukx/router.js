@@ -1,5 +1,6 @@
 
 
+
 /**
  * @exports NamedGroupRegex
  */
@@ -436,7 +437,7 @@ define('BrowserRoute',['./Route', 'promise'], function (Route, Promise) {
 /**
  * @exports BrowserRouter
  */
-define('BrowserRouter',['./Router', './BrowserRoute'], function (Router, BrowserRoute) {
+define('BrowserRouter',['./Router', './BrowserRoute', 'subscribable'], function (Router, BrowserRoute, Subscribable) {
 
    
 
@@ -451,12 +452,27 @@ define('BrowserRouter',['./Router', './BrowserRoute'], function (Router, Browser
    }
    BrowserRouter.prototype = Object.create(BrowserRouter.superclass = Router.prototype);
 
+   Subscribable.prepareInstance(BrowserRoute);
+
    /**
     * Sets up event listeners for hooking into user interaction
     */
    BrowserRouter.prototype._initialiseEvents = function() {
       jQuery(window).on('popstate', this._handleHistoryNavigation.bind(this));
       jQuery(document).on('click', 'a[href]', this._handleClickNavigation.bind(this));
+      this.on('route.before', BrowserRouter._cacheCurrentRoute, BrowserRouter);
+      this.on('route.before', BrowserRouter.fire, BrowserRouter);
+   };
+
+   /**
+    * Sets the currently processing route on the constructor for static access by any listener
+    *
+    * @param {Route} route
+    * @param {String[]} parameters
+    */
+   BrowserRouter._cacheCurrentRoute = function(route, parameters) {
+      BrowserRouter.currentRoute = route;
+      BrowserRouter.currentRouteParameters = parameters;
    };
 
    /**
