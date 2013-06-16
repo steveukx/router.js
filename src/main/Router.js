@@ -1,9 +1,15 @@
-var requirejs = require('requirejs');
+(function() {
 
-requirejs.config({ nodeRequire: require });
+   'use strict';
 
-requirejs(['Router/Router', 'Router/Route'],
-    function (Router) {
-       module.exports.Router = Router;
-       module.exports.Route = Route;
-    });
+   var requirejs = require('requirejs');
+
+   requirejs.config({ nodeRequire: require });
+
+   requirejs(['./Router/Router', './Router/Route'],
+       function (Router, Route) {
+          module.exports.Router = Router;
+          module.exports.Route = Route;
+       });
+
+}());

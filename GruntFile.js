@@ -1,4 +1,6 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
+
+   'use strict';
 
    grunt.initConfig({
       pkg: grunt.file.readJSON('package.json'),
@@ -16,10 +18,14 @@ module.exports = function(grunt) {
       requirejs: {
          compile: {
             options: {
-                 out: "./dist/<%= pkg.version %>/BrowserRouter.js"
-               , name: "BrowserRouter"
-               , baseUrl: "src/main/Router/"
-               , optimize: "none"
+               out: './dist/<%= pkg.version %>/BrowserRouter.js',
+               name: 'BrowserRouter',
+               baseUrl: 'src/main/Router/',
+               optimize: 'none',
+               paths: {
+                  'promise': 'https://raw.github.com/steveukx/Promise/master/src/promise.js',
+                  'subscribable': 'https://raw.github.com/steveukx/Subscribable/master/dist/0.0.8/subscribable-min.js'
+               }
             }
          }
       }

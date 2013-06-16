@@ -1,20 +1,22 @@
-if (typeof define !== 'function') { var define = require('amdefine')(module) }
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
 /**
  * @exports Router
  */
-define(['./NamedGroupRegex', './Route'], function(NamedGroupRegex, Route) {
+define(['./NamedGroupRegex', './Route', 'subscribable'], function(NamedGroupRegex, Route, Subscribable) {
+
+   'use strict';
 
    /**
     * @name Router
     * @constructor
     */
    function Router() {
-      Subscribable.prepareInstance(this);
-
       this._routes = [];
       this._initialiseEvents();
    }
+
+   Router.prototype = Object.create(Subscribable.prototype);
 
    /**
     * @type {Boolean}
@@ -69,7 +71,7 @@ define(['./NamedGroupRegex', './Route'], function(NamedGroupRegex, Route) {
    Router.prototype._processRoutes = function(routes, url) {
       var args = [].slice.call(arguments, 2);
       var fire = this.fire.bind(this);
-      var next = function(err, result) {
+      var next = function(err/* , result*/) {
          if(err) {
             fire('route.error', err);
          }
@@ -127,7 +129,7 @@ define(['./NamedGroupRegex', './Route'], function(NamedGroupRegex, Route) {
          route = this._buildRoute(route, routeHandler);
       }
       else if (!(route instanceof Route)) {
-         throw new TypeError("Must create a route with a string, regular expression or a Route instance");
+         throw new TypeError('Must create a route with a string, regular expression or a Route instance');
       }
 
       this._routes.push(route);

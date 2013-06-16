@@ -1,9 +1,11 @@
-if (typeof define !== 'function') { var define = require('amdefine')(module) }
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
 /**
  * @exports BrowserRoute
  */
-define(['./Route'], function (Route) {
+define(['./Route', 'promise'], function (Route, Promise) {
+
+   'use strict';
 
    /**
     * @name BrowserRoute
@@ -23,7 +25,7 @@ define(['./Route'], function (Route) {
          handlerConfig.template = template;
 
          // is the model a constructor
-         if(typeof handlerConfig.model == "function") {
+         if(typeof handlerConfig.model == 'function') {
             data = new handlerConfig.model(data);
             if(data.setData) {
                handlerConfig.model = data;
@@ -31,17 +33,17 @@ define(['./Route'], function (Route) {
          }
 
          // is the model a persisted model that can accept new data
-         else if(handlerConfig.model && typeof handlerConfig.model.setData == "function") {
+         else if(handlerConfig.model && typeof handlerConfig.model.setData == 'function') {
             handlerConfig.model.setData(data);
          }
 
          // is the controller a constructor
-         if(typeof handlerConfig.controller == "function") {
+         if(typeof handlerConfig.controller == 'function') {
             handlerConfig.controller = new handlerConfig.controller(handlerConfig.model);
          }
 
          // is the controller persisted and can accept a replacement model
-         if(handlerConfig.controller && typeof handlerConfig.controller.setModel == "function") {
+         if(handlerConfig.controller && typeof handlerConfig.controller.setModel == 'function') {
             handlerConfig.controller.setModel(data);
          }
 
@@ -55,7 +57,7 @@ define(['./Route'], function (Route) {
       };
 
       if(handlerConfig.templateUrl) {
-         require(['text!' + handlerConfig.templateUrl, 'text!' + url], onDataReady)
+         require(['text!' + handlerConfig.templateUrl, 'text!' + url], onDataReady);
       }
       else {
          require(['text!' + url], function(data) {

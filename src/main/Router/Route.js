@@ -1,9 +1,11 @@
-if (typeof define !== 'function') { var define = require('amdefine')(module) }
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
 /**
  * @exports Route
  */
-define([], function () {
+define(['promise'], function (Promise) {
+
+   'use strict';
 
    /**
     *

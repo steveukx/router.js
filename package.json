@@ -1,7 +1,7 @@
 {
   "name": "url-router",
   "description": "URL based route dispatcher",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Steve King <steve@mydev.co>",
   "contributors": [
     {
@@ -11,7 +11,9 @@
   ],
   "dependencies": {
     "requirejs": "~2.1.6",
-    "amdefine": "0.0.5"
+    "amdefine": "0.0.5",
+    "subscribable": "0.0.8",
+    "promise-lite": "0.0.4"
   },
   "devDependencies": {
     "grunt": "",
