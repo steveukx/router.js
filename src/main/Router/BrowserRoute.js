@@ -55,6 +55,10 @@ define(['./Route', 'promise'], function (Route, Promise) {
          var view = jQuery(template.trim());
          var controller = handlerConfig.controller;
 
+         if(typeof handlerConfig.view == 'function') {
+            view = new handlerConfig.view(view);
+         }
+
          // wire up the m, v and c with standard getter/setter methods
          if(handlerConfig.getModel(controller) !== model) {
             handlerConfig.setModel(controller, model);
@@ -108,6 +112,13 @@ define(['./Route', 'promise'], function (Route, Promise) {
       if(typeof handlerConfig.controller === 'string') {
          dependencies.add(require([handlerConfig.controller], function(controller) {
             handlerConfig.controller = controller;
+            dependencies.done(null);
+         }));
+      }
+
+      if(typeof handlerConfig.view === 'string') {
+         dependencies.add(require([handlerConfig.view], function(view) {
+            handlerConfig.view = view;
             dependencies.done(null);
          }));
       }
