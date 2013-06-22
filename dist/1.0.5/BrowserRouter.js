@@ -380,12 +380,9 @@ define('BrowserRoute',['./Route', 'promise'], function (Route, Promise) {
          }
 
          var model = handlerConfig.model || data;
-         var view = jQuery(template.trim());
+         var element = jQuery(template.trim());
+         var view = (typeof handlerConfig.view == 'function') ? new handlerConfig.view(element) : element;
          var controller = handlerConfig.controller;
-
-         if(typeof handlerConfig.view == 'function') {
-            view = new handlerConfig.view(view);
-         }
 
          // wire up the m, v and c with standard getter/setter methods
          if(handlerConfig.getModel(controller) !== model) {
@@ -394,7 +391,7 @@ define('BrowserRoute',['./Route', 'promise'], function (Route, Promise) {
          handlerConfig.setView(controller, view);
          handlerConfig.setModel(view, model);
 
-         view.appendTo(handlerConfig.container || document.body);
+         element.appendTo(handlerConfig.container || document.body);
       };
 
       var dependencies = {
