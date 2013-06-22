@@ -72,9 +72,7 @@ define(['./NamedGroupRegex', './Route', 'subscribable'], function(NamedGroupRege
       if(!routes.length) {
          this.fire('router.bad.path', url);
       }
-      else {
-         this._processRoutes(routes, url);
-      }
+      this._processRoutes(routes, url);
    };
 
    /**
