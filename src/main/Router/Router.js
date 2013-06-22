@@ -68,12 +68,27 @@ define(['./NamedGroupRegex', './Route', 'subscribable'], function(NamedGroupRege
     * @param {String} url
     */
    Router.prototype._handleNavigation = function (url) {
-      var routes = this._getRoutesForUrl(url);
+      var cleanUrl = this._cleanUrl(url);
+
+      var routes = this._getRoutesForUrl(cleanUrl);
       if(!routes.length) {
-         this.fire('router.bad.path', url);
+         this.fire('router.bad.path', cleanUrl);
       }
       this._processRoutes(routes, url);
    };
+
+   /**
+    * Gets the correct URL given a source URL
+    * @param {String} url
+    * @returns {String}
+    */
+   Router.prototype._cleanUrl = function(url) {
+      if(this.config('strip.trailing.slash')) {
+         url = url.replace(/\/$/, '');
+      }
+      return url;
+   };
+
 
    /**
     * Consumes an array of routes and handles each in series. Any additional arguments supplied will be passed
@@ -116,10 +131,6 @@ define(['./NamedGroupRegex', './Route', 'subscribable'], function(NamedGroupRege
     * @returns {Route[]}
     */
    Router.prototype._getRoutesForUrl = function (url) {
-      if(this.config('strip.trailing.slash')) {
-         url = url.replace(/\/$/, '');
-      }
-
       return this._routes.filter(function (route) {
          return route.test(url);
       });

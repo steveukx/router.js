@@ -7,6 +7,12 @@ define(['./Route', 'promise'], function (Route, Promise) {
 
    'use strict';
 
+   var merge = function(input, options) {
+      return String(input).replace(/\{([^\}]+)\}/g, function (all, key) {
+         return options && options[key];
+      });
+   };
+
    /**
     *
     * @constructor
@@ -80,15 +86,15 @@ define(['./Route', 'promise'], function (Route, Promise) {
       };
 
       if(handlerConfig.templateUrl) {
-         dependencies.add(require(['text!' + handlerConfig.templateUrl.replace(/\{([^\}]+)\}/g, function (all, key) { return String(routeParams[key]); })],
+         dependencies.add(require(['text!' + merge(handlerConfig.templateUrl, routeParams)],
              function (template) {
                 dependencies.template = template;
                 dependencies.done(null);
              }));
       }
 
-      if(!handlerConfig.noData) {
-         dependencies.add(require(['text!' + url], function(data) {
+      if(!handlerConfig.noData || handlerConfig.dataUrl) {
+         dependencies.add(require(['text!' + merge(handlerConfig.dataUrl || url, routeParams)], function(data) {
             if(String(data).trim().charAt(0) == '{') {
                try {
                   data = JSON.parse(data);
