@@ -423,15 +423,13 @@ define('BrowserRoute',['./Route', 'promise'], function (Route, Promise) {
 
       if(!handlerConfig.noData || handlerConfig.dataUrl) {
          dependencies.add(require(['text!' + merge(handlerConfig.dataUrl || url, routeParams)], function(data) {
-            if(String(data).trim().charAt(0) == '{') {
+            if('{['.indexOf(String(data).trim().charAt(0)) >= 0) {
                try {
                   data = JSON.parse(data);
                }
                catch (e) {}
-               finally {
-                  dependencies.done(data);
-               }
             }
+            dependencies.done(data);
          }));
       }
 
