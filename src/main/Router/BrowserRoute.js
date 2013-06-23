@@ -26,9 +26,11 @@ define(['./Route', 'promise'], function (Route, Promise) {
 
    BrowserRoute.prototype._handler = function(request) {
       var routeParams = request.param;
-      var url = request.url;
       var result = new Promise;
       var handlerConfig = this._configuration;
+
+      var routeHandlerConfig = Object.create(handlerConfig);
+      routeHandlerConfig.url = request.url;
 
       var onDataReady = function (template, data) {
          handlerConfig.template = template;
@@ -69,11 +71,11 @@ define(['./Route', 'promise'], function (Route, Promise) {
          handlerConfig.setView(controller, view);
          handlerConfig.setModel(view, model);
 
-         if(handlerConfig.replace) {
-            jQuery(handlerConfig.replace).replaceWith(element);
+         if(routeHandlerConfig.replace) {
+            jQuery(routeHandlerConfig.replace).replaceWith(element);
          }
          else {
-            element.appendTo(handlerConfig.container || document.body);
+            element.appendTo(routeHandlerConfig.container || document.body);
          }
       };
 
@@ -97,8 +99,14 @@ define(['./Route', 'promise'], function (Route, Promise) {
          _pending: 0
       };
 
+      'templateUrl dataUrl url container replace'.split(' ').forEach(function(item) {
+         if(typeof routeHandlerConfig[item] === 'string') {
+            routeHandlerConfig[item] = merge(routeHandlerConfig[item], routeParams);
+         }
+      });
+
       if(handlerConfig.templateUrl) {
-         dependencies.add(require(['text!' + merge(handlerConfig.templateUrl, routeParams)],
+         dependencies.add(require(['text!' + routeHandlerConfig.templateUrl],
              function (template) {
                 dependencies.template = template;
                 dependencies.done(null);
@@ -106,7 +114,7 @@ define(['./Route', 'promise'], function (Route, Promise) {
       }
 
       if(!handlerConfig.noData || handlerConfig.dataUrl) {
-         dependencies.add(require(['text!' + merge(handlerConfig.dataUrl || url, routeParams)], function(data) {
+         dependencies.add(require(['text!' + (routeHandlerConfig.dataUrl || routeHandlerConfig.url)], function(data) {
             if('{['.indexOf(String(data).trim().charAt(0)) >= 0) {
                try {
                   data = JSON.parse(data);
