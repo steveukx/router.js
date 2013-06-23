@@ -106,7 +106,7 @@ define(['./NamedGroupRegex', './Route', 'subscribable'], function(NamedGroupRege
          }
          else if(routes.length) {
             var route = routes.shift();
-            var param = route.getRouteParameters(url);
+            var param = route.getRouteParameters(url) || {};
             param.data = param.data || result || {};
             fire('route.before', route, param);
 
