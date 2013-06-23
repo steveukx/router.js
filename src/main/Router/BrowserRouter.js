@@ -67,6 +67,11 @@ define(['./Router', './BrowserRoute', 'subscribable'], function (Router, Browser
     * Handles a navigation as a result of a user clicking on a link
     */
    BrowserRouter.prototype._handleClickNavigation = function(e) {
+      var targetWindow = e.currentTarget.getAttribute('target');
+      if(targetWindow && targetWindow.charAt(0) == '_') {
+         return;
+      }
+
       e.preventDefault();
       history.pushState({}, '', e.currentTarget.getAttribute('href'));
       this._handleNavigation(location.pathname);
