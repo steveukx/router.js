@@ -55,8 +55,8 @@ define(['./Route', 'promise'], function (Route, Promise) {
             handlerConfig.controller = new handlerConfig.controller(handlerConfig.model);
          }
 
-         if(handlerConfig.controller && typeof handlerConfig.controller.setRoute === 'function') {
-            handlerConfig.controller.setRoute(routeParams, handlerConfig.model || data);
+         if(handlerConfig.controller && typeof handlerConfig.controller.handleRequest === 'function') {
+            handlerConfig.controller.handleRequest(request, handlerConfig.model || data);
          }
 
          var model = handlerConfig.model || data;
