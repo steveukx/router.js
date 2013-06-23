@@ -98,6 +98,9 @@ define(['./NamedGroupRegex', './Route', 'subscribable'], function(NamedGroupRege
     * @param {String} url
     */
    Router.prototype._processRoutes = function(routes, url) {
+      var req = {
+         url: url
+      };
       var args = [].slice.call(arguments, 2);
       var fire = this.fire.bind(this);
       var next = function(err, result) {
@@ -106,11 +109,10 @@ define(['./NamedGroupRegex', './Route', 'subscribable'], function(NamedGroupRege
          }
          else if(routes.length) {
             var route = routes.shift();
-            var param = route.getRouteParameters(url) || {};
-            param.data = param.data || result || {};
-            fire('route.before', route, param);
+            req.param = route.getRouteParameters(url) || {};
+            fire('route.before', route, req);
 
-            route.handleUrl.apply(route, [url, param].concat(args)).then(
+            route.handleUrl.apply(route, [req].concat(args)).then(
                 function(result) {
                    fire('route.passed', route, result);
                    next(null, result);

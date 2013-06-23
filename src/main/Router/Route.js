@@ -38,30 +38,31 @@ define(['promise'], function (Promise) {
 
    /**
     *
-    * @param routeParams
+    * @param request
     * @returns {Promise}
     */
-   Route.prototype._handler = function (routeParams) {
-      throw new Error("Route._handler: Unable to handle route without being supplied a function.");
+   Route.prototype._handler = function () {
+      throw new Error('Route._handler: Unable to handle route without being supplied a function.');
    };
 
    /**
     * Calls the handler associated with this route
     *
-    * @param {String} url
-    * @param {Object|String[]} routeParameters
+    * @param {Object} request request.url and request.param contain the URL for the request and route parameters for
+    *                         this route and will change between routes on the same request. The request can be used
+    *                         to maintain state between routes.
     * @return {Promise}
     */
-   Route.prototype.handleUrl = function (url, routeParameters) {
+   Route.prototype.handleUrl = function (request) {
       var result;
       var response = new Promise;
 
       try {
-         if(this._handler.length < 3) {
-            result = this._handler(routeParameters, url);
+         if(this._handler.length < 2) {
+            result = this._handler(request);
          }
          else {
-            this._handler(routeParameters, url, function(err, data) {
+            this._handler(request, function(err, data) {
                if(err) {
                   response.reject(err);
                }
@@ -78,7 +79,7 @@ define(['promise'], function (Promise) {
       if (result && typeof result.then == 'function') {
          return result;
       }
-      else if(this._handler.length < 3) {
+      else if(this._handler.length < 2) {
          return response.resolve(result);
       }
       else {

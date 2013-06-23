@@ -24,7 +24,9 @@ define(['./Route', 'promise'], function (Route, Promise) {
    }
    BrowserRoute.prototype = Object.create(BrowserRoute.superclass = Route.prototype);
 
-   BrowserRoute.prototype._handler = function(routeParams, url) {
+   BrowserRoute.prototype._handler = function(request) {
+      var routeParams = request.param;
+      var url = request.url;
       var result = new Promise;
       var handlerConfig = this._configuration;
 
