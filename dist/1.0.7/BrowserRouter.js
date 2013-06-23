@@ -374,7 +374,7 @@ define('BrowserRoute',['./Route', 'promise'], function (Route, Promise) {
       var onDataReady = function (template, data) {
          handlerConfig.template = template;
 
-         data = data || routeParams;
+         data = data || request;
 
          // is the model a constructor
          if(typeof handlerConfig.model === 'function') {
