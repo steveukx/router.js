@@ -60,8 +60,7 @@ define(['./Route', 'promise'], function (Route, Promise) {
          }
 
          var model = handlerConfig.model || data;
-         var element = jQuery(template.trim());
-         var view = (typeof handlerConfig.view == 'function') ? new handlerConfig.view(element) : element;
+         var view = (typeof handlerConfig.view == 'function') ? new handlerConfig.view(template) : null;
          var controller = handlerConfig.controller;
 
          // wire up the m, v and c with standard getter/setter methods
@@ -71,11 +70,14 @@ define(['./Route', 'promise'], function (Route, Promise) {
          handlerConfig.setView(controller, view);
          handlerConfig.setModel(view, model);
 
-         if(routeHandlerConfig.replace) {
-            jQuery(routeHandlerConfig.replace).replaceWith(element);
-         }
-         else {
-            element.appendTo(routeHandlerConfig.container || document.body);
+         var element = view ? typeof view.getElement == 'function' && jQuery(view.getElement()) : jQuery(template.trim());
+         if(element) {
+            if(routeHandlerConfig.replace) {
+               jQuery(routeHandlerConfig.replace).replaceWith(element);
+            }
+            else {
+               element.appendTo(routeHandlerConfig.container || document.body);
+            }
          }
       };
 
