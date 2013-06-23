@@ -270,7 +270,8 @@ define('Router',['./NamedGroupRegex', './Route', 'subscribable'], function(Named
 
             route.handleUrl.apply(route, [url, param].concat(args)).then(
                 function(result) {
-                   next(null, fire('route.passed', route, result));
+                   fire('route.passed', route, result);
+                   next(null, result);
                 },
                 next
             );
