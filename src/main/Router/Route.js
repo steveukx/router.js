@@ -61,8 +61,13 @@ define(['promise'], function (Promise) {
             result = this._handler(routeParameters, url);
          }
          else {
-            result = this._handler(routeParameters, url, function(err, data) {
-               err ? response.reject(err) : response.resolve(data);
+            this._handler(routeParameters, url, function(err, data) {
+               if(err) {
+                  response.reject(err);
+               }
+               else {
+                  response.resolve(data);
+               }
             });
          }
       }
@@ -73,8 +78,11 @@ define(['promise'], function (Promise) {
       if (result && typeof result.then == 'function') {
          return result;
       }
-      else {
+      else if(this._handler.length < 3) {
          return response.resolve(result);
+      }
+      else {
+         return response;
       }
    };
 
