@@ -63,7 +63,12 @@ define(['./Route', 'promise'], function (Route, Promise) {
          handlerConfig.setView(controller, view);
          handlerConfig.setModel(view, model);
 
-         element.appendTo(handlerConfig.container || document.body);
+         if(handlerConfig.replace) {
+            jQuery(handlerConfig.replace).replaceWith(element);
+         }
+         else {
+            element.appendTo(handlerConfig.container || document.body);
+         }
       };
 
       var dependencies = {
