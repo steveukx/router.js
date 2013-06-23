@@ -51,6 +51,10 @@ define(['./Route', 'promise'], function (Route, Promise) {
             handlerConfig.controller = new handlerConfig.controller(handlerConfig.model);
          }
 
+         if(handlerConfig.controller && typeof handlerConfig.controller.setRoute === 'function') {
+            handlerConfig.controller.setRoute(routeParams, handlerConfig.model || data);
+         }
+
          var model = handlerConfig.model || data;
          var element = jQuery(template.trim());
          var view = (typeof handlerConfig.view == 'function') ? new handlerConfig.view(element) : element;
