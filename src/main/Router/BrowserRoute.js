@@ -106,19 +106,14 @@ define(['./Route', 'promise'], function (Route, Promise) {
          }));
       }
 
-      if(typeof handlerConfig.controller === 'string') {
-         dependencies.add(require([handlerConfig.controller], function(controller) {
-            handlerConfig.controller = controller;
-            dependencies.done(null);
-         }));
-      }
-
-      if(typeof handlerConfig.view === 'string') {
-         dependencies.add(require([handlerConfig.view], function(view) {
-            handlerConfig.view = view;
-            dependencies.done(null);
-         }));
-      }
+      'model view controller'.split(' ').forEach(function(component) {
+         if(typeof handlerConfig[component] === 'string') {
+            dependencies.add(require([handlerConfig[component]], function(cls) {
+               handlerConfig[component] = cls;
+               dependencies.done(null);
+            }));
+         }
+      });
 
       dependencies.start();
 

@@ -1,7 +1,7 @@
 {
   "name": "url-router",
   "description": "URL based route dispatcher",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "Steve King <steve@mydev.co>",
   "contributors": [
     {
