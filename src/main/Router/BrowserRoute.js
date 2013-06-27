@@ -60,7 +60,7 @@ define(['./Route', 'promise'], function (Route, Promise) {
          }
 
          var model = handlerConfig.model || data;
-         var view = (typeof handlerConfig.view == 'function') ? new handlerConfig.view(template) : null;
+         var view = (typeof handlerConfig.view == 'function') ? new handlerConfig.view(template.trim()) : null;
          var controller = handlerConfig.controller;
 
          // wire up the m, v and c with standard getter/setter methods
